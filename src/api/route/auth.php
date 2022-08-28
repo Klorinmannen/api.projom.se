@@ -8,9 +8,9 @@ class auth
 {
     public static function validate(array $auth_data): bool
     {
-
         if (!$auth_data['config_security'])
             return true;
+
         if (!$auth_data['route_security'])
             return true;
 

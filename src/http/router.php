@@ -11,7 +11,7 @@ class router
     {
         $request = \http\request::get();
 
-        if ($request->get_type() != request::API_REQ)
+        if ($request->type() != request::API_REQ)
             header('Location: /docs', true, 301);
 
         $controller = '\api\controller';
