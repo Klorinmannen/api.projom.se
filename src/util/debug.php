@@ -14,7 +14,7 @@ class debug {
         return var_export($subject);
     }
 
-    public static function out($subject) {
+    public static function html($subject) {
         echo '<pre>';
         print_r($subject);
         echo '</pre>';
