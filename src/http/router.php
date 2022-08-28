@@ -9,13 +9,6 @@ class router
 
     public static function map(): void
     {
-        $request = \http\request::get();
-
-        if ($request->type() != request::API_REQ) {
-            header('Location: /docs', true, 301);
-            exit;
-        }
-        
         $controller = '\api\controller';
         $controller::route();
     }
