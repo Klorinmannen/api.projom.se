@@ -10,7 +10,7 @@ class controller
     {
         ob_clean();
 
-        $request = new \http\request();
+        $request = new request();
         
         // Route new request
         $router = new router($request);
