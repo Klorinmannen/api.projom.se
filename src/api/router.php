@@ -31,7 +31,6 @@ class router
 
         // The first match is the matched path itself
         array_shift($matched['path_parameters']);
-
         $resource = self::prepare_resource($matched['resource']);
         $this->_resource_controller = self::create_resource_controller($resource);
         $this->_data = self::create_data($matched);
@@ -70,9 +69,8 @@ class router
 
     private function prepare_resource(string $resource): string
     {
-        $resource = trim($resource, '/');
         $resource = str_replace('/', '\\', $resource);
-        return $resource;
+        return '\\'.$resource;
     }
 
     private function create_resource_controller(string $resource): string

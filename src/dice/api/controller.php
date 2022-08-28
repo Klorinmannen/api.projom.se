@@ -1,12 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace common\dice\api;
+
+namespace dice\api;
 
 class controller extends \api\resource\controller
 {
     public const DEFAULT_FACES = 6;
     
-    public function roll() {
+    public function roll()
+    {
         $faces = $this->_query_parameters['faces'] ?? static::DEFAULT_FACES;
 
         $value = 0;
@@ -14,5 +17,14 @@ class controller extends \api\resource\controller
             $value = \dice::roll((int)$faces);
 
         return [ 'value' => $value ];
-    }    
+    }
+
+    public function response(array $raw_response): array
+    {
+        return [];
+    }
+
+    public function validate(array $response): bool {
+        return true;
+    }
 }

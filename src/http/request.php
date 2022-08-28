@@ -38,7 +38,7 @@ class request
         if ($query = \util\validate::query_key($this->_parsed_url, 'query'))
             parse_str($query, $this->_query_params);
         if ($path = \util\validate::query_key($this->_parsed_url, 'path'))
-            $this->_url_path = ltrim($path, '/');
+            $this->_url_path = $path;
         if ($hostname = \util\validate::query_key($this->_parsed_url, 'host'))
             $this->_hostname = trim($hostname);
     }
@@ -70,10 +70,7 @@ class request
 
     private function set_type(string $path): void
     {
-        if (\util\strings::match_pattern($path, self::API_PATTERN))
-            $this->_type = self::API_REQ;
-        else
-            $this->_type = self::PAGE_REQ;
+        $this->_type = self::API_REQ;
     }
 
     private function set_url_path_parts()

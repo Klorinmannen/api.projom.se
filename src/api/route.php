@@ -15,18 +15,18 @@ class route
     public function __construct(
         array $router_data,
         object $request,
-        object $config
+        array $api_config
     ) {
 
         $this->_route_security = $router_data['security'];
         $this->_resource_method = $router_data['resource_method'];
         $this->_resource_controller = $router_data['resource_controller'];
         $this->_parameter_data = $router_data['parameter_data'];
-
+        
         $this->_auth_data = [
-            'config_security' => $config['security'],
+            'config_security' => $api_config['security'],
             'route_security' => $this->_route_security,
-            'auth_header' => $request->get_header_auth()
+            'auth_header' => $request->header_auth()
         ];
     }
 
@@ -57,7 +57,7 @@ class route
             throw new \Exception('Authorization error', 401);
 
         if (!class_exists($this->_resource_controller))
-            throw new \Exception('Resource not found', 400);
+            throw new \Exception('Resource controller not found', 400);
 
         if (!method_exists($this->_resource_controller, $this->_resource_method))
             throw new \Exception('Resource endpoint not found', 400);

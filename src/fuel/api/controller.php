@@ -1,11 +1,14 @@
 <?php
+
 declare(strict_types=1);
-namespace common\split\fuel\api;
+
+namespace fuel\api;
 
 class controller extends \api\resource\controller {
 
-    public function per_traveler() {
-        $cost_data = $this->_json_data;
+    public function per_traveler()
+    {
+        $cost_data = $this->_query_parameters['json_data'];
         
         $distance_km = $cost_data['distance_km'];
         $fuel_cost = $cost_data['fuel_cost'];
@@ -17,6 +20,18 @@ class controller extends \api\resource\controller {
         $traveler_count = $cost_data['traveler_count'];
         $cost_per_traveler = $total / $traveler_count;
         $cost_per_traveler = round($cost_per_traveler, 2);
-        return [ 'cost_per_traveler' => $cost_per_traveler ];
-    }   
+
+        return [
+            'cost_per_traveler' => $cost_per_traveler
+        ];
+    }
+
+    public function response(array $raw_response): array
+    {
+        return [];
+    }
+
+    public function validate(array $response): bool {
+        return true;
+    }
 }

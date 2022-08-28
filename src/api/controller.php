@@ -10,15 +10,15 @@ class controller
     {
         ob_clean();
 
-        $request = new request();
-        $config = new \system\config();
-
+        $request = new \http\request();
+        
         // Route new request
         $router = new router($request);
         $router->map();
         $router_data = $router->data();
 
-        $route = new route($router_data, $request, $config);
+        $api_config = \system::config()->api();
+        $route = new route($router_data, $request, $api_config);
         $route->validate();
 
         // Make endpoint call
