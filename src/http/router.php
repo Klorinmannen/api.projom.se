@@ -16,7 +16,6 @@ class router
             $controller::route();
         } else {
             header('Location: /docs', true, 301);
-        }
-        
+        }       
     }
 }
