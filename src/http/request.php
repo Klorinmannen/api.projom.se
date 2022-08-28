@@ -8,7 +8,7 @@ class request
 {
     public const API_REQ = 1;
     public const PAGE_REQ = 2;
-    public const API_PATTERN = '/^api/';
+    public const DOCS_PATTERN = '/^\/docs/';
 
     protected $_parsed_url = [];
     protected $_query_params = [];
@@ -28,7 +28,7 @@ class request
         self::parse_url();
         self::parse_headers();
         self::set_data();
-        self::set_type($this->_hostname);
+        self::set_type($this->_url_path);
         self::set_url_path_parts();
     }
 
@@ -70,7 +70,10 @@ class request
 
     private function set_type(string $path): void
     {
-        $this->_type = self::API_REQ;
+        if (\util\strings::match_pattern($path, $this->DOCS_PATTERN))
+            $this->_type = self::PAGE_REQ;
+        else
+            $this->_type = self::API_REQ;
     }
 
     private function set_url_path_parts()
@@ -124,6 +127,18 @@ class request
     public function hostname(): string
     {
         return $this->_hostname;
+    }
+
+    public function api(): bool
+    {
+        return $this->_type == $this->API_REQ;
+    }
+
+    public function redirect(string $place): void
+    {   
+        $header = 'Location: '.$place;
+        header($header, true, 301);
+        exit;
     }
 
     public static function init(): void
