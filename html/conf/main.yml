@@ -20,11 +20,11 @@ tags:
   - name: "Pokemons"
     description: "Query for your favorite pokemons!"
   - name: "Common"
-    description: "Small and interesting, common, endpoints"
+    description: ""
   - name: "Items"
-    description: "Query for items"
+    description: ""
   - name: "Recipes"
-    description: "Query for item recipes"
+    description: "Item recipes"
 paths:
   /users/login:
     $ref: "user.yml#/user"
