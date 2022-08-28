@@ -8,7 +8,7 @@ class config
 {
     public const CONFIG_DIR = 'html/conf/';
 
-    public static function get_routes(): array
+    public static function routes(): array
     {
         //if (array_key_exists('api_routes', $_SESSION))
         //  return $_SESSION['api_routes'];

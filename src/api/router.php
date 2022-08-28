@@ -23,7 +23,7 @@ class router
     public function map(): void
     {
         $routes = self::routes();
-        $url_path = $this->_request->get_url_path();
+        $url_path = $this->_request->url_path();
 
         // Match request-path against defined path patterns endpoints
         if (!$matched = self::match_path_route($routes, $url_path))
@@ -39,8 +39,8 @@ class router
 
     private function routes(): array
     {
-        $method = strtolower($this->_request->get_method());
-        $routes = $this->_router_config->get_routes();
+        $method = strtolower($this->_request->method());
+        $routes = $this->_router_config->routes();
 
         if (!$routes = \util\validate::array_key($routes, $method))
             throw new \Exception('No endpoints found with the used http method', 400);
@@ -48,7 +48,7 @@ class router
         // Hell breaks loose if the ksort is removed.
         ksort($routes);
 
-        return router\pattern::get_list($routes);
+        return router\pattern::list($routes);
     }
 
     private function match_path_route(
@@ -94,8 +94,8 @@ class router
     {
         return [
             'path_parameters' => $matched['path_parameters'],
-            'json_data' => $this->_request->get_json_data(),
-            'query_parameters' => $this->_request->get_query_parameters()
+            'json_data' => $this->_request->json_data(),
+            'query_parameters' => $this->_request->query_parameters()
         ];
     }
 

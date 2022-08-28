@@ -12,7 +12,7 @@ class pattern
         '/{state}/' => '([a-zA-Z]+)'
     ];
 
-    public static function get_list(array $routes)
+    public static function list(array $routes)
     {
         $route_patterns = [];
         foreach ($routes as $route => $route_endpoint) {
@@ -31,7 +31,9 @@ class pattern
         $route_pattern = preg_replace('/\//', '\/', $route_pattern);
 
         $template = '/^{{route}}$/';
-        $vars = ['route' => $route_pattern];
+        $vars = [
+            'route' => $route_pattern
+        ];
         return \util\template::bind($template, $vars);
     }
 }

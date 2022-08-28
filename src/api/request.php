@@ -12,7 +12,7 @@ class request extends \http\request
         parent::__construct();
     }
 
-    public function get_url_path(): string
+    public function url_path(): string
     {
         return str_replace('api', '', $this->_url_path);
     }

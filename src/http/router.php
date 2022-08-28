@@ -11,11 +11,10 @@ class router
     {
         $request = \http\request::get();
 
-        if ($request->get_type() == request::API_REQ) {
-            $controller = '\api\controller';
-            $controller::route();
-        } else {
+        if ($request->get_type() != request::API_REQ)
             header('Location: /docs', true, 301);
-        }       
+
+        $controller = '\api\controller';
+        $controller::route();
     }
 }

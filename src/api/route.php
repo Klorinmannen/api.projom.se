@@ -53,13 +53,13 @@ class route
 
     public function validate(): void
     {
+        if (!route\auth::validate($this->_auth_data))
+            throw new \Exception('Authorization error', 401);
+
         if (!class_exists($this->_resource_controller))
             throw new \Exception('Resource not found', 400);
 
         if (!method_exists($this->_resource_controller, $this->_resource_method))
             throw new \Exception('Resource endpoint not found', 400);
-
-        if (!route\auth::validate($this->_auth_data))
-            throw new \Exception('Authorization error', 401);
     }
 }
