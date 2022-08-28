@@ -14,7 +14,7 @@ class controller
         $config = new \system\config();
 
         // Route new request
-        $router = new router($request, $config);
+        $router = new router($request);
         $router->map();
         $router_data = $router->data();
 

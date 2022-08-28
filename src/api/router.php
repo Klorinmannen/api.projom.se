@@ -14,7 +14,7 @@ class router
     public const RESOURCE_CONTROLLER = '\\api\\controller';
 
     public function __construct(
-        object $request,
+        object $request
     ) {
         $this->_request = $request;
         $this->_router_config = new router\config();
