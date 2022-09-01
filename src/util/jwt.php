@@ -9,7 +9,7 @@ class jwt
     public const EXPIRATION_SECONDS = (15 * 60) + 120;
     public const HASH_ALG = 'SHA256';
     public const KEY_BYTES = 30;
-    public const ISSUER = 'dev.projom.se';
+    public const ISSUER = 'api.projom.se';
 
     public static function create(
         int $user_id,

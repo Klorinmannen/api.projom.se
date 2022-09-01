@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 class user
 {
-    private $_username = 'Guest';
-    private $_email = 'Guest';
-    private $_user_id = 0;
-    private $_page_id = 1;
-    private $_filepath = '';
+    private $_username = 'System';
+    private $_email = 'System';
+    private $_user_id = 1;
 
     public function __construct(array $record = [])
     {
@@ -23,8 +21,6 @@ class user
         $this->_email = $record['Email'];
         $this->_username = $record['Username'];
         $this->_user_id = $record['UserID'];
-        $this->_page_id = $record['PageID'];
-        $this->_filepath = $record['FilePath'];
         $this->_record = $record;
     }
 
@@ -48,11 +44,6 @@ class user
         $this->_username = $username;
     }
 
-    public function filepath(): string
-    {
-        return $this->_filepath;
-    }
-
     public function email(): string
     {
         return $this->_email;
@@ -66,21 +57,6 @@ class user
     public function user_id(): int
     {
         return $this->_user_id;
-    }
-
-    public function page_id(): int
-    {
-        return $this->_page_id;
-    }
-
-    public function jwt_key(): string
-    {
-        return $this->_jwt_key;
-    }
-
-    public function status(): bool
-    {
-        return $this->_status;
     }
 
     public function logout(): void
