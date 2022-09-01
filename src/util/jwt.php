@@ -113,7 +113,7 @@ class jwt
             throw new \Exception('Missing token', 401);
 
         if (!$parts = static::validate_token_structure($token))
-            throw new \Exception('Malformed token', 401);
+            throw new \Exception('Malformed token: structure', 401);
 
         $base64url_header = $parts[0];
         if (!$header = static::decode_base64url($base64url_header))
@@ -129,18 +129,18 @@ class jwt
         $user_id = $user->user_id();
         $sub_user_id = (int)$payload['sub'];
         if ($user_id != $sub_user_id)
-            throw new \Exception('Malformed token', 401);
+            throw new \Exception('Malformed token: id', 401);
 
         $table = new \util\table('User');
         if (!$user = $table->select('JWTKey')->where(['UserID' => $user_id])->query())
-            throw new \Exception('Malformed token', 401);
+            throw new \Exception('Malformed token: user', 401);
 
         $user_jwt_key = $user['JWTKey'];
         $known_signature = static::generate_signature(static::HASH_ALG, $base64url_header, $base64url_payload, $user_jwt_key);
         $jwt_signature = $parts[2];
 
         if (!hash_equals($known_signature, $jwt_signature))
-            throw new \Exception('Malformed token', 401);
+            throw new \Exception('Malformed token: signature', 401);
     }
 
     private static function validate_token(
@@ -153,10 +153,10 @@ class jwt
             throw new \Exception('Token expired', 401);
 
         if (empty($header['alg']) || $header['alg'] != static::HASH_ALG)
-            throw new \Exception('Malformed token', 401);
+            throw new \Exception('Malformed token: alg', 401);
 
         if (empty($payload['sub']) || !\util\validate::id($payload['sub']))
-            throw new \Exception('Malformed token', 401);
+            throw new \Exception('Malformed token: sub', 401);
     }
 
     private static function decode_base64url(string $base64url): array
