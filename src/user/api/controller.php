@@ -35,8 +35,8 @@ class controller extends \api\resource\controller
         if (!$user = static::authenticate($user_data['username'], $user_data['password']))
             throw new \Exception('Failed to login', 400);
 
-        $response['username'] = $user['username'];
-        $response['jwt'] = \util\jwt::create($user['UserID'], $user['JWTKey']);
+        $response['username'] = $user['Username'];
+        $response['jwt'] = \util\jwt::create((int)$user['UserID'], $user['JWTKey']);
 
         return $response;
     }

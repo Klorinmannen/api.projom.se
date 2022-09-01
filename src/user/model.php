@@ -15,7 +15,7 @@ class model
     public static function search_by_username(string $username): array
     {
         $table = new \util\table('User');
-        return $table->select(['UserID', 'Name', 'Username', 'Password'])->where(['Username' => $username, 'Deleted' => 0])->query();
+        return $table->select()->where(['Username' => $username, 'Deleted' => 0])->query();
     }
 
     public static function update(
