@@ -149,12 +149,8 @@ class request
         exit;
     }
 
-    public static function init(): void
+    public static function init(): object
     {
-        $_SESSION['request'] = new \http\request();
-    }
-    public static function get(): object
-    {
-        return $_SESSION['request'];
+        return new \http\request();
     }
 }

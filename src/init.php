@@ -9,5 +9,3 @@ require_once('auto_loader.php');
 session_start();
 
 \system::init();
-\http\request::init();
-\user::init();

@@ -31,6 +31,11 @@ class config
         return \util\json::parse($this->_conf_dir . 'api.json');
     }
 
+    public static function init(): object
+    {
+        return new \system\config();
+    }
+
     public function db(): array
     {
         return $this->_db;
