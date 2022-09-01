@@ -153,4 +153,9 @@ class request
     {
         return new \http\request();
     }
+
+    public static function get(): object
+    {
+        return $_SESSION['request'];
+    }
 }

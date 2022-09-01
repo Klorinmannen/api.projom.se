@@ -33,6 +33,11 @@ class user
         return new \user();
     }
     
+    public static function get(): object
+    {
+        return $_SESSION['user'];
+    }
+
     public function set_email(string $email): void
     {
         $this->_email = $email;
