@@ -10,8 +10,10 @@ class router
     {
         $request = \http\request::get();
         if (!$request->api())
-           $request->redirect('/docs/');
-        
+            $request->redirect('/docs');
+        elseif ($request->empty())
+            $request->redirect('/blank.html');
+
         $controller = '\api\controller';
         $controller::route();
     }

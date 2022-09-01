@@ -8,6 +8,7 @@ class request
 {
     public const API_REQ = 1;
     public const PAGE_REQ = 2;
+    public const EMPTY_REQ = 3;
     public const DOCS_PATTERN = '/^\/docs/';
 
     protected $_parsed_url = [];
@@ -73,7 +74,7 @@ class request
         if (\util\strings::match_pattern($path, self::DOCS_PATTERN))
             $this->_type = self::PAGE_REQ;
         elseif (!$this->_url_path)
-            $this->_type = self::PAGE_REQ;
+            $this->_type = self::EMPTY_REQ;
         else
             $this->_type = self::API_REQ;
     }
@@ -134,6 +135,11 @@ class request
     public function api(): bool
     {
         return $this->_type == self::API_REQ;
+    }
+
+    public function empty(): bool
+    {
+        return $this->_type == self::EMPTY_REQ;
     }
 
     public function redirect(string $place): void
