@@ -6,7 +6,7 @@ namespace user;
 
 class util
 {
-    public static function add_new_user(
+    public static function add_new(
         string $username,
         string $password
     ): void {
@@ -16,7 +16,7 @@ class util
         if (!\util\validate::string($password))
             throw new \Exception('Missing password', 400);
 
-        if ($record = \user\model::search_by_username($username))
+        if (\user\model::search_by_username($username))
             throw new \Exception('Failed to create user', 400);
 
         \user\password::validate($password);
@@ -28,7 +28,7 @@ class util
         string $username,
         string $password,
         bool $api_user = false,
-        bool $activate = false
+        bool $activate = true
     ): array {
 
         $user['Name'] = $username;
@@ -56,6 +56,7 @@ class util
         int $user_id,
         string $new_password = ''
     ): array {
+
         if (!\util\validate::id($user_id))
             throw new \Exception('Missing/malformed user id', 400);
 
@@ -63,11 +64,5 @@ class util
         \user\model::update_user($user_id, ['Password' => $new_password]);
 
         return \user\model::get_user($user_id);
-    }
-
-    public static function redirect(string $url): void
-    {
-        header('Location: '.$url);
-        exit;
     }
 }

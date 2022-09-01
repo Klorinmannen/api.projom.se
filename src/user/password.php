@@ -16,9 +16,10 @@ class password
         return static::hash($new_password);
     }
 
-    public static function generate(int $bytes = 10): string
+    public static function generate(int $length = 20): string
     {
-        $pseudo_bytes = openssl_random_pseudo_bytes($bytes);
+        $strong_result = true;
+        $pseudo_bytes = openssl_random_pseudo_bytes($length, $strong_result);
         return bin2hex($pseudo_bytes);
     }
 
