@@ -126,7 +126,7 @@ class jwt
         $time = strtotime('now');
         static::validate_token($time, $payload, $header);
 
-        $user_id = $user->get_user_id();
+        $user_id = $user->user_id();
         $sub_user_id = (int)$payload['sub'];
         if ($user_id != $sub_user_id)
             throw new \Exception('Malformed token', 401);
