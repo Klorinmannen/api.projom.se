@@ -5,11 +5,7 @@ declare(strict_types=1);
 class system
 {
     public static function init(): void
-    {
-        $interface_id = static::interface_id();
-        if ($interface_id != \interfaces::WEB_ID)
-            return;
-            
+    { 
         $_SESSION['request'] = \http\request::init();
         $_SESSION['user'] = \user::init();
         $_SESSION['config'] = \system\config::init();
