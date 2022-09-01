@@ -19,7 +19,7 @@ class controller extends \api\resource\controller
 
         $user_data = [
             'username' => $username,
-            'passowrd' => $password
+            'password' => $password
         ];
 
         $response = $this->response($user_data);
