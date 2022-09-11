@@ -17,3 +17,4 @@ setup/
 log/apache_error.log
 log/error.log
 log/access.log
+.vscode/
