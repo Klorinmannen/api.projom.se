@@ -1,11 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace util;
 
-class database {   
-    public static function dsn(array $config): string {
-        return sprintf( 'mysql:host=%s;port=%d;dbname=%s', 
-                        $config['server_host'], 
-                        $config['server_port'], 
-                        $config['database_name'] );
+use \util\template;
+
+class database
+{
+    public static function dsn(array $config): string
+    {
+        $vars = [
+            'host' => $config['server_host'],
+            'port' => $config['server_port'],
+            'dbname' => $config['database_name']
+        ];
+        $dsn_template = 'mysql:host={{host}};port={{port}};dbname={{dbname}}';
+
+        return template::bind($dsn_template, $vars);
     }
 }

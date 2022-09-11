@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace util;
+namespace http\input;
 
-use \util\validate\floats;
-use \util\validate\integers;
-use \util\validate\strings;
+use \http\input\floats;
+use \http\input\integers;
+use \http\input\strings;
 
 class validate
 {
@@ -30,9 +30,9 @@ class validate
         return strings::match_pattern($string);
     }
 
-    public static function filepath(string $filepath): bool
+    public static function query(string $query): bool
     {
-        return strings::match_pattern($filepath, strings::FILEPATH_PATTERN);
+        return strings::match_pattern($query, strings::QUERY_PATTERN);
     }
 
     public static function id_key(
@@ -77,18 +77,18 @@ class validate
         return (int)$int_subject;
     }
 
-    public static function filepath_key(
+    public static function query_key(
         array $container,
         string $key
     ): string {
 
         if (!static::key_exists($container, $key))
             return '';
-        $filepath_subject = $container[$key];
-        if (!static::filepath($filepath_subject))
+        $query_subject = $container[$key];
+        if (!static::query($query_subject))
             return '';
 
-        return (string)$filepath_subject;
+        return (string)$query_subject;
     }
 
     public static function string_key(

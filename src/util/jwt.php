@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace util;
 
+use \util\validate;
+
 class jwt
 {
     public const EXPIRATION_SECONDS = (15 * 60) + 120;
@@ -155,7 +157,7 @@ class jwt
         if (empty($header['alg']) || $header['alg'] != static::HASH_ALG)
             throw new \Exception('Malformed token: alg', 401);
 
-        if (empty($payload['sub']) || !\util\validate::id($payload['sub']))
+        if (empty($payload['sub']) || !validate::id($payload['sub']))
             throw new \Exception('Malformed token: sub', 401);
     }
 

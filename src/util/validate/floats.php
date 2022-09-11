@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace util;
+namespace util\validate;
 
 class floats
 {

@@ -1,8 +1,6 @@
 <?php
 
-$p = new DateTime();
-sleep(2);
+include('init.php');
 
-$pp = new DateTime();
-
-echo $pp->diff($p)->format('%s') / 1000;
+new \http\request();
+new \http\response();

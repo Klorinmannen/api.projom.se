@@ -6,9 +6,12 @@ namespace http;
 
 class router
 {
-    public static function map(): void
-    {
-        $request = \http\request::get();
+    public static function map(
+        object $http
+    ): void {
+        
+        $request = $http->request();
+
         if (!$request->api())
             $request->redirect('/docs');
         elseif ($request->empty())

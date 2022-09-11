@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 class system
 {
-    public static function init(): void
+    private $_config = null;
+    private $_log = null;
+
+    public function __construct()
     { 
-        $_SESSION['request'] = \http\request::init();
-        $_SESSION['user'] = \user::init();
-        $_SESSION['config'] = \system\config::init();
+        $this->_config = new \system\config();
+        $this->_log = new \system\log($this->_config->db());
     }
 
-    public static function interface_id()
+    public function config(): object
     {
-        $interface = php_sapi_name();
-        if ($interface == 'cli')
-            return \interfaces::CLI_ID;
-        return \interfaces::WEB_ID;
+        return $this->_config;
     }
 
-    public static function config(): object
+    public function log(): object
     {
-        return $_SESSION['config'];
+        return $this->_log;
     }
 }

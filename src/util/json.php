@@ -4,26 +4,17 @@ declare(strict_types=1);
 
 namespace util;
 
+use \util\file\read;
+
 class json
 {
-    public static function parse(string $path): array
+    public static function parse(string $full_filepath): array
     {
-        if (!$path)
+        if (!$full_filepath)
             return [];
 
-        $json_string = static::get_string($path);
+        $json_string = read::from_full_filepath($full_filepath);
         return static::decode($json_string);
-    }
-
-    public static function get_string(string $path): string
-    {
-        if (!$path)
-            return '';
-
-        if (!$json_string = file_get_contents($path))
-            return '';
-
-        return $json_string;
     }
 
     public static function decode(

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace http;
 
+use http\input\validate;
+use util\template;
+
 class request
 {
     public const API_REQ = 1;
@@ -24,43 +27,43 @@ class request
 
     public function __construct()
     {
-        $this->_method = $_SERVER['REQUEST_METHOD'];
-        $this->_url = $_SERVER['REQUEST_URI'];
+        if ($method = validate::string_key($_SERVER, 'REQUEST_METHOD'))
+            $this->_method = strtoupper($method);
+        if ($url = validate::string_key($_SERVER, 'REQUEST_URI'))
+            $this->_url = $url;
+
         self::parse_url();
         self::parse_headers();
         self::set_data();
-        self::set_type($this->_url_path);
+        self::set_type_id();
         self::set_url_path_parts();
     }
 
     private function parse_url(): void
     {
         $this->_parsed_url = parse_url($this->_url);
-        if ($query = \util\validate::query_key($this->_parsed_url, 'query'))
+        if ($query = validate::query_key($this->_parsed_url, 'query'))
             parse_str($query, $this->_query_params);
-        if ($path = \util\validate::query_key($this->_parsed_url, 'path'))
+        if ($path = validate::query_key($this->_parsed_url, 'path'))
             $this->_url_path = ltrim($path, '/');
-        if ($hostname = \util\validate::query_key($this->_parsed_url, 'host'))
+        if ($hostname = validate::query_key($this->_parsed_url, 'host'))
             $this->_hostname = trim($hostname);
     }
 
     private function parse_headers(): void
     {
-        $headers = apache_request_headers();
-        if (isset($headers['Authorization']))
-            $this->_auth_header = str_replace('Bearer ', '', $headers['Authorization']);
+        if ($auth_header = validate::string_key($_SERVER, 'HTTP_AUTHORIZATION'))
+            if (input\strings::match_pattern($auth_header, '/^Bearer .+/'))
+                $this->_auth_header = trim(str_replace('Bearer', '', $auth_header));
     }
 
     private function set_data(): void
     {
-        $this->_input_data = file_get_contents('php://input');
-
         switch ($this->_method) {
             case 'POST':
             case 'PUT':
             case 'PATCH':
-                if ($this->_input_data)
-                    $this->_json_data = \util\json::decode($this->_input_data);
+                $this->_input_data = file_get_contents('php://input') ?? '';
 
                 break;
             default:
@@ -69,9 +72,9 @@ class request
         }
     }
 
-    private function set_type(string $path): void
+    private function set_type_id(): void
     {
-        if (\util\strings::match_pattern($path, self::DOCS_PATTERN))
+        if (input\strings::match_pattern($this->_url_path, self::DOCS_PATTERN))
             $this->_type = self::PAGE_REQ;
         elseif (!$this->_url_path)
             $this->_type = self::EMPTY_REQ;
@@ -84,9 +87,9 @@ class request
         $this->_url_path_parts = explode('/', ltrim($this->_url_path, '/'));
     }
 
-    public function get_query_param(string $param): ?string
+    public function query_param(string $param): ?string
     {
-        if (!$query_param = \util\validate::string_key($this->_query_params, $param))
+        if (!$query_param = validate::string_key($this->_query_params, $param))
             return null;
         return $query_param;
     }
@@ -95,38 +98,42 @@ class request
     {
         return $this->_query_params;
     }
+
     public function url_path(): string
     {
         return $this->_url_path;
     }
+
     public function url_path_parts(): array
     {
         return $this->_url_path_parts;
     }
+
     public function url(): string
     {
         return $this->_url;
     }
+
     public function method(): string
     {
         return $this->_method;
     }
+
     public function lang(): string
     {
         return $this->lang;
     }
-    public function json_data(): array
-    {
-        return $this->_json_data;
-    }
-    public function header_auth(): string
+
+    public function auth_header(): string
     {
         return $this->_auth_header;
     }
-    public function type(): int
+
+    public function type_id(): int
     {
-        return $this->_type;
+        return $this->_type_id;
     }
+
     public function hostname(): string
     {
         return $this->_hostname;
@@ -142,20 +149,29 @@ class request
         return $this->_type == self::EMPTY_REQ;
     }
 
-    public function redirect(string $place): void
-    {   
-        $header = 'Location: '.$place;
-        header($header, true, 301);
+    public function stringify(): string
+    {
+        $vars = [
+            'method' => $this->_method,
+            'url' => $this->_url
+        ];
+        $request_template = '{{method}}: {{url}}';
+        return template::bind($request_template, $vars);
+    }
+
+    public function input_data(): string
+    {
+        return $this->_input_data;
+    }
+
+    public function redirect(
+        string $place,
+        int $code = 301
+    ): void {
+        
+        $header = 'Location: ' . $place;
+        header($header, true, $code);
         exit;
-    }
 
-    public static function init(): object
-    {
-        return new \http\request();
-    }
-
-    public static function get(): object
-    {
-        return $_SESSION['request'];
     }
 }
