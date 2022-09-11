@@ -1,0 +1,6 @@
+{
+    "source_dir": "/var/www/api.projom.se/src/",
+    "config_dir": "/var/www/api.projom.se/config/",
+    "system_dir": "/var/www/api.projom.se/",
+    "default_controller": "\\api\\controller"
+}

@@ -12,6 +12,6 @@
 .gitignore~
 git_stuff
 database-backup.sql
-config/
+config/db.json
 setup/
 log/
